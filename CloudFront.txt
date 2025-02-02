@@ -1,0 +1,41 @@
+# Amazon CloudFront
+
+-> It's a web service that gives businesses and web application developers an easy and cost effective way to distribute content with low latency and high data transfer speed.
+-> It's a global service
+-> CloudFront is a webservice that speeds up distribution of your static and dynamic web content, such as .html, .css, .js and image files to your users
+-> It delivers your content through a worldwide network of data centers called edge locations
+-> when a user request content that you are serving with CloudFront, the user is routed (via DNS resolution) to the edge location that provides the lowest latency, so that content is delivered with the best possible performance
+-> if the content is already in the edge location with lowest latency, CloudFront delivers it immediately
+-> This dramatically reduces the number of networks that your user's request must pass through which improves performance
+-> if not, CloudFront retrieves it from an Amazon S3 bucket or an HTTP/Webserver that you have identified as the source for the definitive version of your content (origin server)
+-> CloudFront also keeps persistent connection with origin servers so files are fetched from the origins as quickly as possible
+
+
+***> you can access CloudFront in the following ways
+    - AWS Management Console
+    - AWS SDKs
+    - CloudFront API
+    - AWS CLI
+
+**> CloudFront Edge locations
+-> Edge locations are not tied to availability zones or regions
+-> CloudFront has 216 points of presence (205 edge locations and 11 regional edge caches) in 84 cities across 42 countries
+
+**> CloudFront Regional Edge caches
+-> it has added several regional edge cache locations globally, at close proximity to your viewers
+- They are located b/w your origin webserver and the global edge locations that serve content directly to your viewers
+- As objects become less popular, individual edge locations may remove those objects to make room for more popular content
+- Regional edge cache working as a alternative of origin to reduce the burden of origin
+- regional edge cache have a large cache width than any individual edge location, so object remain in the cache longer at the nearest regional edge caches
+
+
+**> CloudFront Regional Edge cache - working
+-> WHen a viewer make  a request on your website or through your application, DNS routes the request to the CloudFront edge location that can best serve the user's request
+-> This location is typically the nearest CloudFront edge location in terms of latency
+-> In the edge location, CloudFront checks its cache for the requested files
+-> if the files are in the cache, CloudFront returns them to the user
+-> if the files are not in the cache, the edge servers go to the nearest regional edge cache to fetch the object
+-> Regional edge caches have feature parity with edge locations for eg- a cache invalidation request removes an object from both edge caches and regional edge caches before it expires
+-> The next time a viewer request the object, CloudFront returns to the origin to fetch the latest version of the object
+-> Proxy method PUT/POST/PATCH/OPTIONS/DELETE go directly to the origin from the edge location and do not proxy through the regional edge caches
+-> dynamic content as determined at request time, doesn't flow thorugh regional edge cache, but goes directly to the origin     

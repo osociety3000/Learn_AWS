@@ -38,3 +38,49 @@
 -> FIFO Request - API actions for sending, receiving, deleting and changing visibility of messages from FIFO Queues are charged at FIFO rates
 -> Contents of Request - A single request can have from 1 to 10 messages, upto a maximum total payload of 256kb
 -> Size of payload - Each 64kb chunk of a payload is billed as 1 request (e.g. - API action with a 256kb payload is billed as 4 request)
+
+
+***> Short Polling
+-> A request is returned immediately even if the queue is empty
+    - it doesn't work for messages to appear in the queue
+    - it queries only a subnet of the available servers for messages (based on weighted random distribution)
+-> default by SQS
+-> receiving message wait time is set to 0
+-> More request are used, which implies higher cost 
+
+***> Long Polling
+-> Is preferred to regular/short Polling. it uses fewer requests and request cost by -
+    - eliminating false empty responses by querying all the servers
+-> Reduce the number of empty responses by allowing Amazon SQS to wait until a message is available in the queue before sending a respons unless the connection timeout (20sec)
+
+-> receiving message wait time is to set to a non zero value (max 20sec)
+-> billing is same for both Polling
+
+***> SQS Retention Period
+
+-> SQS messages can remain in the queue for upto 14 days (SQS Retention Period)
+-> Range is 1 min to 14 days (default is 4 days)
+-> Once the maximum Retention Period of a message is reached, it will be deleted automatically from the queue
+-> messages can be sent to the queue and read from the queue simultaneously
+-> SQS can be used  with DynamoDB, EC2, ECS, REdshift, RDS, Lambda, S3 to make distributed/decoupled applications
+-> you can have multiple queues with different priorities
+
+***> SQS visibility timeout
+
+-> Is the duration of time a message is locked for read by other servers
+-> Max is 12 hours and default is 30 second
+-> A server that read a message to process it, can change the message visibility timeout if it needs more time to process the message
+-> After a message is read, there are the following possibilites
+    - An ACK is received that a message is processed, so it must be deleted from the queue to avoid duplicates
+    - If a fail is recieved or the visibility timeout expires, the message will then be unlocked for read, such that it can be read and processed by another servers
+
+***> Delivery Delay
+-> AWS SQS provides delivery delay options to postpone the delivery of new messages to queue if delivery delay is defined for a queue, new messages will not be visible to the server for the duration of delay. The default(min) delay for a queue is 0 seconds. The maximum is 15 minutes
+
+***> receiving message wait time
+-> The default time is 0 second. This is max amount of time that a long Polling receive call will wait for a message to become available before returning an empty response (max value is 20 sec)
+
+***> Dead Letter Queue
+-> the main task of a dead letter queue is handling message failure a dead letter queue lets you set aside and isolate messages that can't be processed correctly to determine why their processing didn't succeed
+-> Don't use a dead letter queue with a FIFO Queue, if you don't want to break the exact order of messages or operations
+->  DLQ must be of the same type as the source queue (standard or FIFO)

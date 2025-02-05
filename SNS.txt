@@ -1,0 +1,72 @@
+# Amazon SNS (SImple Notification Service)
+
+-> SNS is a fast, flexible, fully managed push notification Service
+-> It's a web Service that co-ordinates and manages the delivery or sending of messages to subscribing endpoints or clients
+-> It allows for sending individual messages or fan-out messages to a large number of recipients or to other distributed AWS services
+    - Messages published to an SNS Topics will be delivered to the subscriber immediately
+    - Inexpensive, pay as you go model with no upfront cost
+    - Reliable, at least three copies of the data are store across multiple AZ in same regions
+-> It's a way of sending messages when your are using autoscaling, it  triggers an SNS service which will email, you that 'your EC2 instance is growing'
+
+***> Publisher - publisher are also known as producerd that produce and send the message to the SNS which is a logical access point
+
+***> Subscriber - subscriber such as webservers, email addresses, Amazon SQS Queue, AWS Lambda, receive the message or notification from the SNS over one of the supported protocols (Amazon SQS,email, Lambda, HTTPS, SMS)
+
+
+***> SNS Topic
+
+-> Is a logical access point and communication channels
+-> Each topic has a unique name
+-> A topic name is limited to 256 alphanumeric characters
+-> The topic name must be unique within the AWS account
+-> Each topic is assigned an AWS ARN once it gets created
+-> A topic can support subscriber and notification deliveries over multiple protocols
+-> Messages/request published to a single topic can be delivered over multiple protocols as configured when creating each subscriber
+-> Delivery formats/transport protocols (endpoints)
+    - SMS
+    - email
+    - email -json -> for application
+    - HTTP/HTTPS
+    - SQS
+    - AWS Lambda
+
+-> When using Amazon SNS, you (as the owner) create a topic and control access to it by defining access policies that determine which publishers and subscribers can communicate with the topic
+-> Instead of including a specific destination address in each message, a publisher sends Messages to topics that they have created or to topics they have permission to publish to
+-> Amazon SNS matches the topic to a list of subscribers who have subscribed to that topic, and delivers the message to each of these subscriber
+-> Each topic has a unique name that identifies the Amazon SNS endpoint for publisher to past messages and subscribers to register for notification
+-> Subscribers receive all messages published to the topics to which they subscribe, and all subscribes to a topic receive the same messages
+
+-> By default, only the topic owner(who created it) can publish to the SNS topic
+-> The owner can set/change permissions to one or more users (with valid AWS ID) to publish to his topic
+-> Only the owner of the topic can grant/change permissions for the topic
+-> Subscriber can be those wuth/without AWS ID, only subscriber with AWS ID can request subscription
+-> Both publishes and subscribers can use SSL to help secure the channel to send and receive Messages
+
+**> supported PUSH notification platforms -
+    - Amazon Device Messaging
+    - Apple Push Notification Service
+    - Google Cloud Messaging
+    - Windows push Notification service
+    - Baidu Cloud push for android
+
+SNS topic can have subscribers from any supported push notification platform, as well as any other endpoint type such as SMS or email
+
+-> When you publish a notification to a topic, SNS will send identical copies of that message to each endpoint subscribed to the topic
+
+***> Amazon SNS alternatives
+
+    - Amazon Kinesis Data Stream
+    - Amazon Managed Queue Service (AWS MQS)
+    - Apache Kafka
+    - Twilio
+    - Pusher 
+
+***> Amazon SNS Pricing
+
+-> Publish action - Each 64kb of request payload count as one request so 256kb payload will charged as four request
+-> Mobile Push notification - $0.50/million request
+-> SMS 
+-> email
+-> HTTP/S notification
+-> SQS and Lambda calls are free these are charged at SQS and lambda roles
+-> Data transfer
